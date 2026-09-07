@@ -1,0 +1,72 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Status {
+  NEW
+  DYEING
+  WASHING
+  CREATION
+  QC
+  READY
+  DELIVERED
+}
+
+enum ProcessType {
+  DYE
+  WASH
+  CREATE
+  REPAIR
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String?
+  email String? @unique
+  role  String
+}
+
+model Customer {
+  id      Int     @id @default(autoincrement())
+  name    String
+  phone   String?
+  address String?
+  orders  Order[]
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId Int
+  createdAt  DateTime @default(now())
+  dueDate    DateTime?
+  items      Item[]
+}
+
+model Item {
+  id            Int           @id @default(autoincrement())
+  order         Order         @relation(fields: [orderId], references: [id])
+  orderId       Int
+  sku           String?
+  description   String?
+  colorRequested String?
+  price         Float?
+  currentStatus Status       @default(NEW)
+  processes     ItemProcess[]
+}
+
+model ItemProcess {
+  id          Int         @id @default(autoincrement())
+  item        Item        @relation(fields: [itemId], references: [id])
+  itemId      Int
+  processType ProcessType
+  operatorId  Int?
+  startedAt   DateTime?
+  completedAt DateTime?
+  notes       String?
+}

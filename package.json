@@ -1,0 +1,23 @@
+{
+  "name": "laundry-mgr",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "next": "13",
+    "react": "18",
+    "react-dom": "18"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}
